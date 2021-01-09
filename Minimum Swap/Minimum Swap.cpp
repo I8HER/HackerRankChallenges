@@ -46,35 +46,33 @@ using namespace std;
 
 
 int minimumSwaps(vector<int> arr) {
-	int count =0, index, minNum, loop= arr.size();
-	vector<int>::iterator it;
+	int count = 0, min = arr[0], minIndex=0;
 
-	
-	for (int i = 0; i < loop; i++) {
-		minNum = *min_element(arr.begin(), arr.end());
-		it = find(arr.begin(), arr.end(), minNum);
-		index = it-arr.begin();
+	for (int i = 0; i < arr.size(); i++) {
+		if (arr[i] < min) {
+			minIndex = i;
+			min = arr[i];
+		}
+	}
 
-		if (index != 0) {
-			arr[index] = arr[0];
-			arr.erase(arr.begin());
-			count++;
-			for (int k = 0; k < arr.size(); k++) {
-				std::cout << arr[k];
-			}
-			std::cout << '\n';
-		}
-		else{
-			arr.erase(arr.begin());
-		}
-		for (int j = 0; j < arr.size(); j++) {
-			std::cout << arr[j];
-		}
-		std::cout << '\n';
+	if (minIndex != 0) {
+		int temp = arr[0];
+		arr[0] = arr[minIndex];
+		arr[minIndex] = temp;
+		count++;
 	}
 
 
-
+	for (int j = 1; j < arr.size(); j++) {
+		int position = arr[j] - arr[0];
+		if (arr[position] != arr[j]) {
+			int temp = arr[position];
+			arr[position] = arr[j];
+			arr[j] = temp;
+			j--;
+			count++;
+		}
+	}
 
 	return count;
 }
@@ -85,7 +83,7 @@ int minimumSwaps(vector<int> arr) {
 int main()
 {
 	int result;
-	vector<int>arr{3,7,6,9,1,8,10,4,2,5};
+	vector<int>arr{4,3,1,2};
 	result = minimumSwaps(arr);
 	std::cout <<'\n'<< result;
 }
