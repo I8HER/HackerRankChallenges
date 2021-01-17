@@ -7,21 +7,22 @@
 using namespace std;
 
 long arrayManipulation(int n, vector<vector<int>> queries) {
-    vector<long>endArr(n, 0);
-    long max = 0;
-    int Esize = endArr.size(), Qsize = queries.size();
+    vector<long>endArr(n * 2, 0);
+    long max = 0, Qsize = queries.size();
     for (int j = 0; j < Qsize; j++) {
-        for (int t = queries[j][0] - 1; t <= queries[j][1] - 1; t++) {
-            endArr[t] += queries[j][2];
-            if (endArr[t] > max) {
-                max = endArr[t];
-            }
+        endArr[queries[j][0] - 1] += queries[j][2];
+        if (queries[j][0] - 1 != queries[j][1] - 1) {
+            endArr[queries[j][1] - 1] += queries[j][2];
+        }
+    }
+    for (int i = 0; i < endArr.size(); i++) {
+        if (endArr[i] > max) {
+            max = endArr[i];
         }
     }
 
     return max;
 }
-
 
 int main()
 {
